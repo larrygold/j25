@@ -1,0 +1,19 @@
+<h1>Tous nos membres</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th>Prénom</th>
+    <th>Nom</th>
+    <th>Email</th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+  <td><%= user.first_name %></td>
+  <td><%= user.last_name %></td>
+  <td><%= user.email %></td>
+  </tr>
+
+<% end %>
+
+</table>

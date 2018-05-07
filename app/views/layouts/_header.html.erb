@@ -1,0 +1,27 @@
+<header>
+  <nav class="navbar navbar-default navbar-inverse">
+    <%= link_to "Eventbrite", root_path, class: "navbar-brand" %>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item"><%= link_to 'Evénements', events_path, class: 'nav-link' %></li>
+      <li class="nav-item"><%= link_to 'Membres', users_path, class: 'nav-link' %></li>
+      <li class="nav-item">Créer un événement</li>
+
+      <% if user_signed_in? %>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienvenue, <%= current_user.first_name %> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><%= link_to "Mon Profil" %></li>
+          <li class="divider"></li>
+          <li>  <%= link_to('Déconnexion', destroy_user_session_path, method: :delete) %></li>
+        </ul>
+      </li>
+
+      <% else %>
+
+      <% end %>
+
+    </ul>
+
+  </nav>
+</header>
