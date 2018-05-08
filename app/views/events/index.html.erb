@@ -9,6 +9,7 @@
       <th>Description</th>
       <th>Date</th>
       <th>Lieu</th>
+      <th>Prix</th>
       <th></th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <td><%= event.description %></td>
         <td><%= event.date %></td>
         <td><%= event.place %></td>
+        <td><%= event.price %></td>
         <td><%= link_to 'Plus d\'infos', event %></td>
 
         <% if event.creator == current_user %>

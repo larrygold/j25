@@ -9,12 +9,15 @@
         <th>Description</th>
         <th>Date</th>
         <th>Lieu</th>
+        <th>Prix</th>
       </tr>
 
       <tr>
         <td><%= @event.description %></td>
         <td><%= @event.date %></td>
         <td><%= @event.place %></td>
+        <td><%= @event.price %></td>
+
       </tr>
 
     </table>
@@ -41,7 +44,28 @@
     <%= button_to 'Je me désinscris', action: "unparticipate", class: "btn btn-danger" %>
 
     <% elsif !@event.attendees.include?(current_user) && user_signed_in? %>
-    <%= button_to 'Je participe !', action: "participate", class: "btn btn-primary" %>
+    <!-- <%= button_to 'Je participe !', action: "participate", class: "btn btn-primary" %> -->
+
+          <%= form_tag participation_path do %>
+          <article>
+          <% if flash[:error].present? %>
+            <div id="error_explanation">
+              <p><%= flash[:error] %></p>
+            </div>
+          <% end %>
+          <label class="amount">
+          <span>Amount: <%= @event.price.to_f / 100 %>€</span>
+          </label>
+          </article>
+
+          <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                data-description="Paiement de l'événement"
+                data-amount="<%= @event.price %>"
+                data-currency="eur"
+                data-locale="auto"></script>
+          <% end %>
+
 
     <% else %>
 

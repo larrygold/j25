@@ -15,8 +15,8 @@ class ChargesController < ApplicationController
     charge = Stripe::Charge.create(
       :customer    => customer.id,
       :amount      => @amount,
-      :description => 'Rails Stripe customer',
-      :currency    => 'usd'
+      :description => 'Paiement de #{current_user.first_name} #{current_user.last_name}',
+      :currency    => 'eur'
     )
 
   rescue Stripe::CardError => e

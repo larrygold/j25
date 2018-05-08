@@ -24,15 +24,29 @@ class EventsController < ApplicationController
 
   #Take part in an event
   def participate
-    @event = Event.find(params[:id])
+      @event = Event.find(params[:id])
 
-    if @event.attendees.include?(current_user)
-      flash.now[:danger] = "Vous participez déjà à cet événement !"
-      render 'show'
-    else
-      @event.attendees << current_user
-      render 'show'
-    end
+      # Amount in cents
+      @amount = @event.price
+
+      customer = Stripe::Customer.create(
+        :email => params[:stripeEmail],
+        :source  => params[:stripeToken]
+      )
+
+      charge = Stripe::Charge.create(
+        :customer    => customer.id,
+        :amount      => @amount,
+        :description => 'Paiement de #{current_user.first_name} #{current_user.last_name}',
+        :currency    => 'eur'
+      )
+
+    @event.attendees << current_user
+    redirect_to @event
+
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+      redirect_to @event
 
   end
 
@@ -91,6 +105,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:name, :description, :date, :place).merge(creator_id: current_user.id)
+      params.require(:event).permit(:name, :description, :date, :place, :price).merge(creator_id: current_user.id)
     end
 end
