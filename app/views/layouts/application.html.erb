@@ -17,8 +17,14 @@
 
   <body>
     <%= render 'layouts/header' %>
+
     <div class="container">
-    <%= yield %>
+      
+      <% flash.each do |error, message| %>
+      <div class="alert alert-<%= error %>"><%= message %></div>
+      <% end %>
+
+      <%= yield %>
     </div>
   </body>
 </html>

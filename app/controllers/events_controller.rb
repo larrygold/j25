@@ -10,6 +10,7 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    @event = Event.find(params[:id])
   end
 
   # GET /events/new
@@ -20,6 +21,27 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
   end
+
+  #Take part in an event
+  def participate
+    @event = Event.find(params[:id])
+
+    if @event.attendees.include?(current_user)
+      flash.now[:danger] = "Vous participez déjà à cet événement !"
+      render 'show'
+    else
+      @event.attendees << current_user
+      render 'show'
+    end
+
+  end
+
+  def unparticipate
+    @event = Event.find(params[:id])
+    @event.attendees.delete(current_user)
+    render 'show'
+  end
+
 
   # POST /events
   # POST /events.json
@@ -69,6 +91,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:name, :description, :date, :place)
+      params.require(:event).permit(:name, :description, :date, :place).merge(creator_id: current_user.id)
     end
 end

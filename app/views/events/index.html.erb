@@ -9,7 +9,7 @@
       <th>Description</th>
       <th>Date</th>
       <th>Lieu</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -21,8 +21,12 @@
         <td><%= event.date %></td>
         <td><%= event.place %></td>
         <td><%= link_to 'Plus d\'infos', event %></td>
+
+        <% if event.creator == current_user %>
         <td><%= link_to 'Editer', edit_event_path(event) %></td>
         <td><%= link_to 'Supprimer', event, method: :delete, data: { confirm: 'Etes-vous sûr ?' } %></td>
+        <% end %>
+
       </tr>
     <% end %>
   </tbody>
@@ -30,6 +34,7 @@
 
 <br>
 
+<% if user_signed_in? %>
 <div class="container">
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
@@ -37,3 +42,4 @@
 </div>
 </div>
 </div>
+<% end %>

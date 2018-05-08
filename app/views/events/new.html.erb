@@ -1,5 +1,15 @@
 <h1>Nouvel Evénement</h1>
 
-<%= render 'form', event: @event %>
+<% if user_signed_in? %>
 
-<%= link_to 'Retour', events_path %>
+  <%= render 'form', event: @event %>
+
+  <div class="text-center">
+  <%= link_to 'Retour', events_path %>
+  </div>
+
+<% else %>
+
+  <p class="alert alert-danger">Veuillez vous connecter ou créer un compte !</p>
+
+<% end %>

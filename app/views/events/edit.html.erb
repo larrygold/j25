@@ -1,6 +1,14 @@
 <h1>Editer l'événement</h1>
 
-<%= render 'form', event: @event %>
+<% if @event.creator == current_user %>
 
-<%= link_to 'Afficher l\'événement', @event %> |
-<%= link_to 'Retour', events_path %>
+  <%= render 'form', event: @event %>
+
+  <%= link_to 'Afficher l\'événement', @event %> |
+  <%= link_to 'Retour', events_path %>
+
+<% else %>
+
+<p class="alert alert-danger">Etes-vous le créateur de cet événement ? Si oui, veuillez vous connecter.</p>
+
+<% end %>

@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :events
   devise_for :users, :controllers => { registrations: 'registrations'}
   resources :users, only: [:index, :show]
+
+  post '/events/:id/participate', to: 'events#participate', as: 'participation'
+  post '/events/:id/unparticipate', to: 'events#unparticipate', as: 'unparticipation'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
 end
