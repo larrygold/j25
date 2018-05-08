@@ -25,24 +25,35 @@ class EventsController < ApplicationController
   #Take part in an event
   def participate
       @event = Event.find(params[:id])
-
       # Amount in cents
       @amount = @event.price
 
-      customer = Stripe::Customer.create(
-        :email => params[:stripeEmail],
-        :source  => params[:stripeToken]
-      )
+      if @amount.to_i > 0
 
-      charge = Stripe::Charge.create(
-        :customer    => customer.id,
-        :amount      => @amount,
-        :description => 'Paiement de #{current_user.first_name} #{current_user.last_name}',
-        :currency    => 'eur'
-      )
+          customer = Stripe::Customer.create(
+            :email => params[:stripeEmail],
+            :source  => params[:stripeToken]
+          )
 
-    @event.attendees << current_user
-    redirect_to @event
+          charge = Stripe::Charge.create(
+            :customer    => customer.id,
+            :amount      => @amount,
+            :description => 'Paiement de #{current_user.first_name} #{current_user.last_name}',
+            :currency    => 'eur'
+          )
+
+
+        @event.attendees << current_user
+        redirect_to @event
+
+        return
+      else
+
+          @event.attendees << current_user
+          redirect_to @event
+          return
+
+      end
 
     rescue Stripe::CardError => e
       flash[:error] = e.message
