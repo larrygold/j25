@@ -19,11 +19,6 @@
     <%= render 'layouts/header' %>
 
     <div class="container">
-      
-      <% flash.each do |error, message| %>
-      <div class="alert alert-<%= error %>"><%= message %></div>
-      <% end %>
-
       <%= yield %>
     </div>
   </body>
